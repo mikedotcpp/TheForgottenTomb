@@ -1,4 +1,4 @@
-# TheForgottenTomb
+# The Forgotten Tomb
 A demo of the [GridBasedRaycaster project](https://github.com/mikedotcpp/GridBasedRaycaster) project that uses realtime lighting and particle effects.
 
 [![Alt text](https://img.youtube.com/vi/L6gVolqa8A0/0.jpg)](https://www.youtube.com/watch?v=L6gVolqa8A0)

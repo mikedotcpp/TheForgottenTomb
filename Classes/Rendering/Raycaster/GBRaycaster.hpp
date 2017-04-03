@@ -138,7 +138,7 @@ namespace mikedotcpp
         /**
          * The extent of the observable world that is seen at any given moment. Measured in degrees.
          */
-        float _fov = 120.0f;
+        float _fov = 160.0f;
         
         /**
          */

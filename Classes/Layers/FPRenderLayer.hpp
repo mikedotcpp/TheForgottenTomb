@@ -136,6 +136,12 @@ namespace mikedotcpp
         cocos2d::Camera* _fpsCamera = nullptr;
         
         /**
+         * Same as the FPS camera except that it only renders the player-level stuff.
+         */
+        cocos2d::Camera* _playerCamera = nullptr;
+        cocos2d::Sprite3D* _playerRightHand = nullptr;
+        
+        /**
          * Parses and stores map data to be used by BlockManager and GBRaycaster.
          */
         mikedotcpp::MapInfo* _mapInfo;

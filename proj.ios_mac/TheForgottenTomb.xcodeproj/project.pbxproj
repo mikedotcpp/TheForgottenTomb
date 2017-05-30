@@ -62,6 +62,8 @@
 		D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6B0611A1803AB670077942B /* CoreMotion.framework */; };
 		ED545A7C1B68A1F400C3958E /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ED545A7B1B68A1F400C3958E /* libiconv.dylib */; };
 		ED545A7E1B68A1FA00C3958E /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ED545A7D1B68A1FA00C3958E /* libiconv.dylib */; };
+		F922651E1EDB4E6B00B63D45 /* models in Resources */ = {isa = PBXBuildFile; fileRef = F922651D1EDB4E6B00B63D45 /* models */; };
+		F92265201EDB4E9800B63D45 /* models in Resources */ = {isa = PBXBuildFile; fileRef = F922651D1EDB4E6B00B63D45 /* models */; };
 		F931B4081E883C12005E87A5 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = F931B4071E883C12005E87A5 /* maps */; };
 		F931B4091E883C1D005E87A5 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = F931B4071E883C12005E87A5 /* maps */; };
 		F931B4101E883CCA005E87A5 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = F931B40F1E883CCA005E87A5 /* sounds */; };
@@ -193,6 +195,7 @@
 		D6B0611A1803AB670077942B /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
 		ED545A7B1B68A1F400C3958E /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/usr/lib/libiconv.dylib; sourceTree = DEVELOPER_DIR; };
 		ED545A7D1B68A1FA00C3958E /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		F922651D1EDB4E6B00B63D45 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = models; sourceTree = "<group>"; };
 		F931B4071E883C12005E87A5 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = maps; sourceTree = "<group>"; };
 		F931B40F1E883CCA005E87A5 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		F954EE681E78E1DC00FDF1BC /* GBRaycaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GBRaycaster.cpp; path = Rendering/Raycaster/GBRaycaster.cpp; sourceTree = "<group>"; };
@@ -354,6 +357,7 @@
 				46880B7A19C43A67006E1F66 /* logo.png */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				F931B4071E883C12005E87A5 /* maps */,
+				F922651D1EDB4E6B00B63D45 /* models */,
 				F954EEDB1E78F28200FDF1BC /* shaders */,
 				F931B40F1E883CCA005E87A5 /* sounds */,
 				F98EB37A1E88D62B001B6833 /* Particle3D */,
@@ -610,6 +614,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F922651E1EDB4E6B00B63D45 /* models in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
@@ -647,6 +652,7 @@
 				F931B4111E883CCA005E87A5 /* sounds in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				F931B4091E883C1D005E87A5 /* maps in Resources */,
+				F92265201EDB4E9800B63D45 /* models in Resources */,
 				F98EB37C1E88D63C001B6833 /* Particle3D in Resources */,
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				F954EEDD1E78F28600FDF1BC /* shaders in Resources */,

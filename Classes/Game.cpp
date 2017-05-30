@@ -79,7 +79,43 @@ void Game::setupParticleEffects()
     particlePortal->setCameraMask( (unsigned short)cocos2d::CameraFlag::USER1 );
     particlePortal->setScale( 20.0f );
     particlePortal->startParticleSystem();
-    _layer3D->addChild( particlePortal );
+//    _layer3D->addChild( particlePortal );
+    
+    //
+    // Sarcophagus
+    //
+    cocos2d::Sprite3D* sarcophagus = cocos2d::Sprite3D::create( "models/Sarcophagus/Sarcophagus.obj" );
+    sarcophagus->setPosition3D( particlePortal->getPosition3D() );
+    sarcophagus->setCameraMask( (unsigned short)cocos2d::CameraFlag::USER1 );
+    sarcophagus->setRotation3D( cocos2d::Vec3( 0, 90.0f, 0 ) );
+    sarcophagus->setScale( 20.0f );
+    _layer3D->addChild( sarcophagus );
+    
+    
+    //
+    // Model testing
+    //
+//    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/sg-sword-8-textured-poor-obj/sg-sword-8-textured-poor.obj" ); // scale = 0.009f
+//    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/wooden-ladder-low-poly-obj/wooden-ladder-low-poly.obj" ); // scale = 0.05f
+//    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/monster-sign-low-poly-obj/monster-sign-low-poly.obj" ); // scale = 0.25f
+    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/low-poly-key-obj/low-poly-key.obj" ); // scale = 0.005f
+//    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/low-poly-shovel-textured-obj/low-poly-shovel-textured.obj" );
+//    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/pistol-obj/pistol.obj" ); // scale = 0.25f
+//    cocos2d::Sprite3D* model = cocos2d::Sprite3D::create( "models/zelda-master-sword-obj/zelda-master-sword.obj" );
+    
+    cocos2d::Vec3 pos = cocos2d::Vec3( 192.000000f, 512.000000f, 1088.000000f );
+//    cocos2d::Vec3 pos = particlePortal->getPosition3D();
+////    pos.y = 128.0f;
+//    pos.y = 64.0f;
+    
+    model->setPosition3D( pos );
+    model->runAction( cocos2d::RepeatForever::create( cocos2d::RotateBy::create( 1, cocos2d::Vec3( 0, 90.0f, 0 ) ) ) );
+    model->setCameraMask( (unsigned short)cocos2d::CameraFlag::USER1 );
+//    model->setScale( 0.25f );
+//    model->setScale( 0.009f );
+    model->setScale( 0.05f );
+//    model->setScale( 3.0f );
+    _layer3D->addChild( model );
 }
 
 void Game::onEnter()
@@ -121,9 +157,20 @@ void Game::addFPSCamera( float fieldOfView, float nearPlane, float farPlane )
     cocos2d::Vec3 lightDirection = cocos2d::Vec3( 0, 0, -30 );
     cocos2d::Vec3 lightPosition = cocos2d::Vec3::ZERO;
     cocos2d::Color3B lightColor = cocos2d::Color3B::WHITE;
-    _flashlight = cocos2d::SpotLight::create( lightDirection, lightPosition, lightColor, 0, 150, 500 );
+    float innerAngle = 0, outerAngle = 100, range = 700;
+    _flashlight = cocos2d::SpotLight::create( lightDirection, lightPosition, lightColor, innerAngle, outerAngle, range );
     _flashlight->retain();
     _fpsCamera->addChild( _flashlight );
+    
+    //
+    // Testing a simple gun model.
+    //
+    cocos2d::Sprite3D* gun = cocos2d::Sprite3D::create( "models/pistol-obj/pistol.obj" ); // scale = 0.25f
+    cocos2d::Vec3 pos = cocos2d::Vec3( 20.000000f, -30.000000f, -70.000000f );
+    gun->setPosition3D( pos );
+    gun->setRotation3D( cocos2d::Vec3( 0, -150.0f, 0 ) );
+    gun->setCameraMask( (unsigned short)cocos2d::CameraFlag::USER2 );
+    _playerRightHand->addChild( gun );
 }
 
 void Game::update( float delta )

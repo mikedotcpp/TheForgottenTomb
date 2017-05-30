@@ -1,0 +1,56 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Mat
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.012549 0.012549 0.012549
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump Untitled 3_3.bmp
+map_Kd Untitled 3_3.bmp
+
+newmtl Mat.001
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.012549 0.012549 0.012549
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Untitled 4.bmp
+
+newmtl Null
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.012549 0.012549 0.012549
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump Null.3Surface_Color.jpg
+map_Kd Null.3Surface_Color.jpg
+
+newmtl Null_1
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.012549 0.012549 0.012549
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump NullSurface_Color.jpg
+map_Kd NullSurface_Color.jpg
+
+newmtl Null_2
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.012549 0.012549 0.012549
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump Null.1Surface_Color.jpg
+map_Kd Null.1Surface_Color.jpg

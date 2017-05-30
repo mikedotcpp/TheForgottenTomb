@@ -100,6 +100,11 @@ void FPRenderLayer::triggerBehaviors( const cocos2d::Vec3& previousPosition, con
 {
     _fpsCamera->setPosition3D( currentPosition );
     
+    //
+    _playerCamera->setPosition3D( currentPosition );
+    _playerRightHand->setPosition3D( currentPosition );
+    //
+    
     Point3f enterPosition = Point3f( currentPosition.x, currentPosition.y, currentPosition.z );
     Point3f exitPosition = Point3f( previousPosition.x, previousPosition.y, previousPosition.z );
     Point3f triggers[] = { enterPosition, exitPosition };
@@ -259,6 +264,22 @@ void FPRenderLayer::addFPSCamera( float fieldOfView, float nearPlane, float farP
         _fpsCamera->setCameraFlag( cocos2d::CameraFlag::USER1 );
         _fpsCamera->retain();
         _layer3D->addChild( _fpsCamera );
+        
+        //
+        _playerCamera = cocos2d::Camera::createPerspective( fieldOfView, (GLfloat)winSize.width/winSize.height, nearPlane, farPlane );
+        _playerCamera->setPosition3D( cocos2d::Vec3( startingPos.x, _viewerHeight, startingPos.y ) );
+        _playerCamera->setRotation3D( cocos2d::Vec3( 0.0f, -_cameraRotationOffset - player.yaw, 0.0f ) );
+        _playerCamera->setCameraFlag( cocos2d::CameraFlag::USER2 );
+        _playerCamera->retain();
+        _layer3D->addChild( _playerCamera );
+        
+        _playerRightHand = cocos2d::Sprite3D::create();
+        _playerRightHand->setPosition3D( cocos2d::Vec3( startingPos.x, _viewerHeight, startingPos.y ) );
+        _playerRightHand->setRotation3D( cocos2d::Vec3( 0.0f, -_cameraRotationOffset - player.yaw, 0.0f ) );
+        _playerRightHand->setCameraMask( (unsigned int) cocos2d::CameraFlag::USER2 );
+        _playerRightHand->retain();
+        _layer3D->addChild( _playerRightHand );
+        //
     }
 }
 
@@ -336,6 +357,11 @@ void FPRenderLayer::onMouseMove( cocos2d::Event* event )
         firstMove = false;
     }
     _fpsCamera->setRotation3D( calculateCameraRotation( ms->getLocation() ) );
+    
+    //
+    _playerCamera->setRotation3D( calculateCameraRotation( ms->getLocation() ) );
+    _playerRightHand->setRotation3D( calculateCameraRotation( ms->getLocation() ) );
+    //
 }
 
 void FPRenderLayer::onMouseDown( cocos2d::Event* event )
@@ -371,6 +397,11 @@ void FPRenderLayer::onTouchMoved( cocos2d::Touch *touch, cocos2d::Event *unused_
     if( _firstTouch && _firstTouch->getID() == touch->getID() )
     {
         _fpsCamera->setRotation3D( calculateCameraRotation( touch->getLocation(), true ) );
+        
+        //
+        _playerCamera->setRotation3D( calculateCameraRotation( touch->getLocation(), true ) );
+        _playerRightHand->setRotation3D( calculateCameraRotation( touch->getLocation(), true ) );
+        //
     }
 }
 
@@ -421,6 +452,11 @@ void FPRenderLayer::setViewerHeight( float height )
     {
         cocos2d::Vec3 pos = _fpsCamera->getPosition3D();
         _fpsCamera->setPosition3D( cocos2d::Vec3( pos.x, _viewerHeight, pos.y ) );
+        
+        //
+        _playerCamera->setPosition3D( cocos2d::Vec3( pos.x, _viewerHeight, pos.y ) );
+        _playerRightHand->setPosition3D( cocos2d::Vec3( pos.x, _viewerHeight, pos.y ) );
+        //
     }
 }
 

@@ -105,6 +105,10 @@ namespace mikedotcpp
          */
         void clearTileResourceAt( Point3f position );
         
+        /**
+         */
+        void transposeAboutY( Point3f& vector );
+        
     protected:
         /**
          * Refers to the number of rays fired in raycasting algorithm. The classic
@@ -184,10 +188,6 @@ namespace mikedotcpp
             TODO: Verify that this is actually necessary...it may not be.
          */
         Point2i getShortestMapCoord( Point3f playerPosition, Point2i vCoord, Point2i hCoord );
-        
-        /**
-         */
-        void transposeAboutY( Point3f& vector );
         
         /**
          */

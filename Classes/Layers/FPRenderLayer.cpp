@@ -107,21 +107,46 @@ void FPRenderLayer::triggerBehaviors( const cocos2d::Vec3& previousPosition, con
     
     Point3f enterPosition = Point3f( currentPosition.x, currentPosition.y, currentPosition.z );
     Point3f exitPosition = Point3f( previousPosition.x, previousPosition.y, previousPosition.z );
-    Point3f triggers[] = { enterPosition, exitPosition };
     
-    for( int i = 0; i < sizeof( triggers[0] )/sizeof( Point3f ); ++i )
+    // 1. Get the SOURCE tile.
+    Point3f transExit = exitPosition;
+    _raycaster->transposeAboutY( transExit );
+    Point2i sourceTile = _raycaster->tileCoordForPosition( transExit );
+    
+    // 2. Get the DESTINATION tile.
+    Point3f transEnter = enterPosition;
+    _raycaster->transposeAboutY( transEnter );
+    Point2i destinationTile = _raycaster->tileCoordForPosition( transEnter );
+    
+    // 3. If SOURCE == DESTINATION, do nothing
+    if( sourceTile.x == destinationTile.x && sourceTile.y == destinationTile.y )
     {
-        int tileResourceIndex = _raycaster->getTileResourceIndex( triggers[i] );
-        if( tileResourceIndex >= 0 )
+        return;
+    }
+//    else
+//    {
+//        cocos2d::log( "CROSSED AT sourceTile: (%i, %i)  destTile: (%i, %i)", sourceTile.x, sourceTile.y, destinationTile.x, destinationTile.y );
+//    }
+    
+    // 4. If SOURCE has a behavior, call the onExit() function on the SOURCE tile ELSE do nothing
+    int tileResourceIndex = _raycaster->getTileResourceIndex( exitPosition );
+    if( tileResourceIndex >= 0 )
+    {
+        int behaviorIndex = _mapInfo->tiles[tileResourceIndex].tag;
+        if( behaviorIndex >= 0 && behaviorIndex < _behaviorFunctions.size() )
         {
-            int behaviorIndex = _mapInfo->tiles[tileResourceIndex].tag;
-            if( behaviorIndex >= 0 )
-            {
-                if( behaviorIndex < _behaviorFunctions.size() )
-                {
-                    _behaviorFunctions[behaviorIndex]->onEnter( currentPosition, previousPosition );
-                }
-            }
+            _behaviorFunctions[behaviorIndex]->onExit( currentPosition, previousPosition );
+        }
+    }
+    
+    // 5. If DESTINATION has a behavior, call the onEnter() function on the DESTINATION tile ELSE do nothing.
+    tileResourceIndex = _raycaster->getTileResourceIndex( enterPosition );
+    if( tileResourceIndex >= 0 )
+    {
+        int behaviorIndex = _mapInfo->tiles[tileResourceIndex].tag;
+        if( behaviorIndex >= 0 && behaviorIndex < _behaviorFunctions.size() )
+        {
+            _behaviorFunctions[behaviorIndex]->onEnter( currentPosition, previousPosition );
         }
     }
 }

@@ -123,7 +123,9 @@ void Game::onEnter()
     FPRenderLayer::onEnter();
     
     setMessage( "The Forgotten Tomb", "fonts/CAESAR.ttf", 80, cocos2d::Vec2( 0.5f, 0.5f ) );
-    //setMessage( "Press the \'F\' key to toggle your flashlight.", "fonts/SFDisplay-Thin.ttf", 40, cocos2d::Vec2( 0.5f, 0.9f ) );
+//    setMessage( "Press the \'F\' key to toggle your flashlight.", "fonts/SFDisplay-Thin.ttf", 40, cocos2d::Vec2( 0.5f, 0.9f ) );
+    
+    addBehavior( new PickupObject( _raycaster, this ) );
 }
 
 void Game::setMessage( const std::string& msg, const std::string& font, float fontSize, cocos2d::Vec2 normalizedPos )
@@ -132,12 +134,14 @@ void Game::setMessage( const std::string& msg, const std::string& font, float fo
     cocos2d::Label* text = (cocos2d::Label*)_layer3D->getChildByTag( textTag );
     if( text == nullptr )
     {
-        text = cocos2d::Label::createWithTTF( msg, "fonts/CAESAR.ttf", 80 );
+        text = cocos2d::Label::createWithTTF( msg, font, fontSize );
+//        text = cocos2d::Label::createWithTTF( msg, "fonts/CAESAR.ttf", 80 );
         text->setTag( textTag );
         _layer3D->addChild( text );
     }
     text->setString( msg );
-    text->setNormalizedPosition( cocos2d::Vec2( 0.5f, 0.5f ) );
+    text->setNormalizedPosition( normalizedPos );
+//    text->setNormalizedPosition( cocos2d::Vec2( 0.5f, 0.5f ) );
     text->setColor( cocos2d::Color3B::WHITE );
     text->setOpacity( 0 );
     float duration = 1.25f;
@@ -145,6 +149,40 @@ void Game::setMessage( const std::string& msg, const std::string& font, float fo
     text->runAction( cocos2d::Sequence::create( cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, 20 ) ), NULL ) );
     text->runAction( cocos2d::Sequence::create( cocos2d::DelayTime::create( duration*3 ), cocos2d::FadeOut::create( duration ), NULL ) );
     text->runAction( cocos2d::Sequence::create( cocos2d::DelayTime::create( duration*3 ), cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, -20 ) ), NULL ) );
+}
+
+void Game::setHintMessage( const std::string& msg, const std::string& font, float fontSize, cocos2d::Vec2 normalizedPos )
+{
+    if( _hint )
+    {
+        _hint->removeFromParent();
+    }
+    _hint = cocos2d::Label::createWithTTF( msg, font, fontSize );
+    _hint->setString( msg );
+    _layer3D->addChild( _hint );
+    
+    cocos2d::Size winsize = cocos2d::Director::getInstance()->getWinSize();
+    _hint->setPosition( winsize.width*normalizedPos.x, winsize.height*normalizedPos.y );
+    
+    _hint->setColor( cocos2d::Color3B::WHITE );
+    _hint->setOpacity( 0 );
+    
+    float duration = 0.10f;
+    _hint->stopAllActions();
+    _hint->runAction( cocos2d::Sequence::create( cocos2d::FadeIn::create( duration ), NULL) );
+    _hint->runAction( cocos2d::Sequence::create( cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, 20 ) ), NULL ) );
+}
+
+void Game::dismissHintMessage()
+{
+    float duration = 0.10f;
+    if( _hint )
+    {
+        _hint->stopAllActions();
+        _hint->runAction( cocos2d::Sequence::create( cocos2d::FadeOut::create( duration ), NULL ) );
+        _hint->runAction( cocos2d::Sequence::create( cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, -20 ) ),
+                                                     cocos2d::ToggleVisibility::create(), NULL ) );
+    }
 }
 
 void Game::addFPSCamera( float fieldOfView, float nearPlane, float farPlane )
@@ -227,4 +265,43 @@ void Game::toggleFlashlight()
     {
         _flashlight->removeFromParent();
     }
+}
+
+/**
+ * When the player enters this tile, we should have it removed from the map. Additionally, you may want to call 
+ * some code that increments a counter or stores a reference to the object in some sort of inventory.
+ */
+void PickupObject::onEnter( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
+{
+//    if( !_entered )
+    {
+        ((Game*)_layer)->setHintMessage( "Press \'E\' to examine the pistol.", "fonts/SFDisplay-Thin.ttf", 40, cocos2d::Vec2( 0.5f, 0.1f ) );
+        cocos2d::log( "SHOWING THE USE MESSAGE!" );
+//        _entered = true;
+    }
+//    _raycaster->clearTileResourceAt( mikedotcpp::Point3f( enterPosition.x, enterPosition.y, enterPosition.z ) );
+//    flashScreen();
+}
+
+
+void PickupObject::onExit( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
+{
+    ((Game*)_layer)->dismissHintMessage();
+        cocos2d::log( "HIDING THE USE MESSAGE!" );
+    _entered = false;
+}
+
+/**
+ * Some feedback for the player to communicate they picked up an item.
+ */
+void PickupObject::flashScreen()
+{
+    cocos2d::Size winSize = cocos2d::Director::getInstance()->getWinSize();
+    cocos2d::LayerColor* flash = cocos2d::LayerColor::create( cocos2d::Color4B( 255, 255, 0, 100 ), winSize.width, winSize.height );
+    cocos2d::FadeOut* fade = cocos2d::FadeOut::create( 0.5f );
+    cocos2d::RemoveSelf* removeSelf = cocos2d::RemoveSelf::create();
+    cocos2d::Sequence* sequence = cocos2d::Sequence::create( fade, removeSelf, NULL );
+    flash->runAction( sequence );
+    _layer->addChild( flash );
+    cocos2d::experimental::AudioEngine::play2d( "sounds/dsitemup.wav" );
 }

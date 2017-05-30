@@ -5,7 +5,7 @@
 	<key>data</key>
 	<dict>
 		<key>startInFullscreen</key>
-		<true/>
+		<false/>
 		<key>cocos2d.x.fps</key>
 		<integer>60</integer>
 		<key>cocos2d.x.display_fps</key>

@@ -157,7 +157,7 @@ void Game::addFPSCamera( float fieldOfView, float nearPlane, float farPlane )
     cocos2d::Vec3 lightDirection = cocos2d::Vec3( 0, 0, -30 );
     cocos2d::Vec3 lightPosition = cocos2d::Vec3::ZERO;
     cocos2d::Color3B lightColor = cocos2d::Color3B::WHITE;
-    float innerAngle = 0, outerAngle = 100, range = 700;
+    float innerAngle = 50, outerAngle = 100, range = 500;
     _flashlight = cocos2d::SpotLight::create( lightDirection, lightPosition, lightColor, innerAngle, outerAngle, range );
     _flashlight->retain();
     _fpsCamera->addChild( _flashlight );

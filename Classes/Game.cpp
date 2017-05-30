@@ -148,7 +148,8 @@ void Game::setMessage( const std::string& msg, const std::string& font, float fo
     text->runAction( cocos2d::Sequence::create( cocos2d::FadeIn::create( duration ), NULL) );
     text->runAction( cocos2d::Sequence::create( cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, 20 ) ), NULL ) );
     text->runAction( cocos2d::Sequence::create( cocos2d::DelayTime::create( duration*3 ), cocos2d::FadeOut::create( duration ), NULL ) );
-    text->runAction( cocos2d::Sequence::create( cocos2d::DelayTime::create( duration*3 ), cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, -20 ) ), NULL ) );
+    text->runAction( cocos2d::Sequence::create( cocos2d::DelayTime::create( duration*3 ), cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, -20 ) ),
+                                               cocos2d::RemoveSelf::create(), NULL ) );
 }
 
 void Game::setHintMessage( const std::string& msg, const std::string& font, float fontSize, cocos2d::Vec2 normalizedPos )
@@ -171,6 +172,8 @@ void Game::setHintMessage( const std::string& msg, const std::string& font, floa
     _hint->stopAllActions();
     _hint->runAction( cocos2d::Sequence::create( cocos2d::FadeIn::create( duration ), NULL) );
     _hint->runAction( cocos2d::Sequence::create( cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, 20 ) ), NULL ) );
+    
+    _interact = true;
 }
 
 void Game::dismissHintMessage()
@@ -183,6 +186,7 @@ void Game::dismissHintMessage()
         _hint->runAction( cocos2d::Sequence::create( cocos2d::MoveBy::create( duration, cocos2d::Vec2( 0, -20 ) ),
                                                      cocos2d::ToggleVisibility::create(), NULL ) );
     }
+    _interact = false;
 }
 
 void Game::addFPSCamera( float fieldOfView, float nearPlane, float farPlane )
@@ -253,6 +257,16 @@ void Game::onKeyReleased( cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Even
         toggleFlashlight();
         cocos2d::Vec3 pos = _fpsCamera->getPosition3D();
     }
+    else if( keyCode == cocos2d::EventKeyboard::KeyCode::KEY_E )
+    {
+        if( _interact )
+        {
+            Point3f playerPosition = Point3f( _fpsCamera->getPosition3D().x, _fpsCamera->getPosition3D().y, _fpsCamera->getPosition3D().z );
+            _raycaster->clearTileResourceAt( playerPosition );
+            flashScreen();
+            dismissHintMessage();
+        }
+    }
 }
 
 void Game::toggleFlashlight()
@@ -267,34 +281,7 @@ void Game::toggleFlashlight()
     }
 }
 
-/**
- * When the player enters this tile, we should have it removed from the map. Additionally, you may want to call 
- * some code that increments a counter or stores a reference to the object in some sort of inventory.
- */
-void PickupObject::onEnter( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
-{
-//    if( !_entered )
-    {
-        ((Game*)_layer)->setHintMessage( "Press \'E\' to examine the pistol.", "fonts/SFDisplay-Thin.ttf", 40, cocos2d::Vec2( 0.5f, 0.1f ) );
-        cocos2d::log( "SHOWING THE USE MESSAGE!" );
-//        _entered = true;
-    }
-//    _raycaster->clearTileResourceAt( mikedotcpp::Point3f( enterPosition.x, enterPosition.y, enterPosition.z ) );
-//    flashScreen();
-}
-
-
-void PickupObject::onExit( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
-{
-    ((Game*)_layer)->dismissHintMessage();
-        cocos2d::log( "HIDING THE USE MESSAGE!" );
-    _entered = false;
-}
-
-/**
- * Some feedback for the player to communicate they picked up an item.
- */
-void PickupObject::flashScreen()
+void Game::flashScreen()
 {
     cocos2d::Size winSize = cocos2d::Director::getInstance()->getWinSize();
     cocos2d::LayerColor* flash = cocos2d::LayerColor::create( cocos2d::Color4B( 255, 255, 0, 100 ), winSize.width, winSize.height );
@@ -302,6 +289,22 @@ void PickupObject::flashScreen()
     cocos2d::RemoveSelf* removeSelf = cocos2d::RemoveSelf::create();
     cocos2d::Sequence* sequence = cocos2d::Sequence::create( fade, removeSelf, NULL );
     flash->runAction( sequence );
-    _layer->addChild( flash );
+    addChild( flash );
     cocos2d::experimental::AudioEngine::play2d( "sounds/dsitemup.wav" );
+}
+
+/**
+ * When the player enters this tile, we should have it removed from the map. Additionally, you may want to call 
+ * some code that increments a counter or stores a reference to the object in some sort of inventory.
+ */
+void PickupObject::onEnter( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
+{
+    _layer->setHintMessage( "Press \'E\' to examine the pistol.", "fonts/SFDisplay-Thin.ttf", 40, cocos2d::Vec2( 0.5f, 0.1f ) );
+}
+
+
+void PickupObject::onExit( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
+{
+    _layer->dismissHintMessage();
+    _entered = false;
 }

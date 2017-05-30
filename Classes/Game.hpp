@@ -28,18 +28,20 @@ public:
 protected:
     float _nextFlicker = 0.f;
     
+    bool _interact = false;
+    
     cocos2d::AmbientLight* _ambientLight;
     cocos2d::PointLight* _pointLight1;
     cocos2d::PointLight* _pointLight2;
     cocos2d::SpotLight* _lavaLamp;
     cocos2d::SpotLight* _flashlight;
-    
     cocos2d::Label* _hint;
     
     void setupLighting();
     void setupParticleEffects();
     
     void toggleFlashlight();
+    void flashScreen();
 };
 
 /**
@@ -50,14 +52,13 @@ protected:
 class PickupObject : public mikedotcpp::BehaviorObject
 {
 public:
-    PickupObject( mikedotcpp::GBRaycaster* gbRaycaster, cocos2d::Layer* layer ) : _raycaster( gbRaycaster ), _layer( layer ){};
+    PickupObject( mikedotcpp::GBRaycaster* gbRaycaster, Game* layer ) : _raycaster( gbRaycaster ), _layer( layer ){};
     void onEnter( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition ) override;
     void onExit( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition ) override;
 private:
     mikedotcpp::GBRaycaster* _raycaster;
-    cocos2d::Layer* _layer;
+    Game* _layer;
     bool _entered = false;
-    void flashScreen();
 };
 
 #endif /* Game_hpp */

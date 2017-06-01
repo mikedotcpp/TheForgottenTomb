@@ -1,0 +1,116 @@
+{
+    "properties":
+    {
+        "path": "",
+        "name": "default",
+        "tileSize": 128,
+        "width": 8,
+        "height": 8,
+        "useRealtimeLighting": true,
+        "spritesheets":
+        [
+            "default"
+        ],
+        "version": "0.9.0"
+    },
+    "tiles":
+    [
+        {
+            "textureAll": "ForgottenTomb/catacombs_wall0.png",
+            "normalAll": "ForgottenTomb/catacombs_wall_normal0.png",
+            "vertexShader": "shaders/block.vsh",
+            "fragmentShader": "shaders/block.fsh",
+            "tag": 0,
+            "comment": "1"
+        },
+        {
+            "textureAll": "ForgottenTomb/catacombs_wall1.png",
+            "normalAll": "ForgottenTomb/catacombs_wall_normal1.png",
+            "vertexShader": "shaders/block.vsh",
+            "fragmentShader": "shaders/block.fsh",
+            "tag": -1,
+            "comment": "2"
+        },
+        {
+            "textureAll": "concrete_plates.png",
+            "normalAll": "concrete_plates_n.png",
+            "vertexShader": "shaders/block.vsh",
+            "fragmentShader": "shaders/block.fsh",
+            "tag": -1,
+            "comment": "3"
+        }
+    ],
+    "planes":
+    [
+        {
+            "height": 128,
+            "map":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0,
+                0, 3, 3, 3, 3, 3, 3, 0,
+                0, 3, 3, 3, 3, 3, 3, 0,
+                0, 3, 3, 3, 3, 3, 3, 0,
+                0, 3, 3, 3, 3, 3, 3, 0,
+                0, 3, 3, 3, 3, 3, 3, 0,
+                0, 3, 3, 3, 3, 3, 3, 0,
+                0, 0, 0, 0, 0, 0, 0, 0
+            ],
+            "comment": "This plane represents the CEILING."
+        },
+        {
+            "height": 0,
+            "map":
+            [
+                1, 1, 1, 1, 1, 1, 1, 1,
+                1, 0, 0, 0, 0, 0, 0, 1,
+                1, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 0, 0, 0, 0, 1,
+                1, 1, 1, 1, 1, 1, 1, 1
+            ],
+            "comment": "This plane represents the WALLS."
+        },
+        {
+            "height": -128,
+            "map":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0,
+                0, 2, 2, 2, 2, 2, 2, 0,
+                0, 2, 2, 2, 2, 2, 2, 0,
+                0, 2, 2, 2, 2, 2, 2, 0,
+                0, 2, 2, 2, 2, 2, 2, 0,
+                0, 2, 2, 2, 2, 2, 2, 0,
+                0, 2, 2, 2, 2, 2, 2, 0,
+                0, 0, 0, 0, 0, 0, 0, 0
+            ],
+            "comment": "This plane represents the FLOORS."
+        }
+    ],
+    "actors":
+    [
+        {
+            "type": "Player1",
+            "x": 6,
+            "y": 0,
+            "z": 1,
+            "yaw": 0.0,
+            "comment": "The actor that represents the player. This MUST be defined."
+        }
+    ],
+    "behaviors":
+    [
+        {
+            "onEnter": "haltMove",
+            "comment": "Tiles tagged with this behavior will act as barriers to player movement (such as a wall)."
+        }
+    ],
+    "triggers":
+    [
+        {
+            "continueRaycast": true,
+            "comment": "This is a really poorly name, not well-used attempt at allowing map-makers to give optimization hints to the raycaster."
+        }
+    ]
+}

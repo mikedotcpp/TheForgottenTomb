@@ -125,6 +125,10 @@ namespace mikedotcpp
         float _viewerHeight = 512.0f;
         
         /**
+         */
+        bool _mapLoaded = false;
+        
+        /**
          * A container layer where all 3D objects are added (including blocks/faces). 
          */
         cocos2d::Layer* _layer3D;

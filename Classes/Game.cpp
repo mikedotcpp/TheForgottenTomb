@@ -30,7 +30,8 @@ bool Game::init()
 
 void Game::setupLighting()
 {
-    cocos2d::Color3B lightColor = cocos2d::Color3B( 5, 5, 40 );
+    cocos2d::Color3B lightColor = cocos2d::Color3B( 100, 100, 100 );
+//    cocos2d::Color3B lightColor = cocos2d::Color3B( 5, 5, 40 );
     _ambientLight = cocos2d::AmbientLight::create( lightColor );
     _layer3D->addChild( _ambientLight );
     
@@ -265,6 +266,24 @@ void Game::onKeyReleased( cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Even
             _raycaster->clearTileResourceAt( playerPosition );
             flashScreen();
             dismissHintMessage();
+            _blockManager->reclaimAllBlocks();
+            
+            loadMap( "maps/default.json" );
+            
+            
+            /////////////////////////
+            // Load player position
+            /////////////////////////
+            
+            if( _fpsCamera )
+            {
+                cocos2d::Size winSize = cocos2d::Director::getInstance()->getWinSize();
+                Actor player = _mapInfo->actors[0];
+                _viewerHeight = player.y;
+                
+                Point3f startingPos( _raycaster->tilePositionForCoord( Point2i( player.z, player.x ) ) );
+                _fpsCamera->setPosition3D( cocos2d::Vec3( startingPos.x, _viewerHeight, startingPos.y ) );
+            }
         }
     }
 }
@@ -299,7 +318,7 @@ void Game::flashScreen()
  */
 void PickupObject::onEnter( cocos2d::Vec3 enterPosition, cocos2d::Vec3 exitPosition )
 {
-    _layer->setHintMessage( "Press \'E\' to examine the pistol.", "fonts/SFDisplay-Thin.ttf", 40, cocos2d::Vec2( 0.5f, 0.1f ) );
+    _layer->setHintMessage( "Press \'E\' to [ENABLE CONTEXT-SENSITIVE ACTION].", "fonts/SFDisplay-Thin.ttf", 30, cocos2d::Vec2( 0.5f, 0.1f ) );
 }
 
 

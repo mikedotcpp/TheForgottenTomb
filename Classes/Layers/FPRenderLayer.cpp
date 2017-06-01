@@ -59,6 +59,10 @@ void FPRenderLayer::addBehavior( BehaviorObject* behaviorObject )
 
 void FPRenderLayer::update(float delta)
 {
+    if( !_mapLoaded )
+    {
+        return;
+    }
     cocos2d::Vec3 rotation =  cocos2d::Vec3( _fpsCamera->getRotation3D().x, _fpsCamera->getRotation3D().y, _fpsCamera->getRotation3D().z );
     float adjustedRotation = ( rotation.y + _cameraRotationOffset ) * ( MATH_PI/180.0f );
     
@@ -153,6 +157,10 @@ void FPRenderLayer::triggerBehaviors( const cocos2d::Vec3& previousPosition, con
 
 void FPRenderLayer::visit( cocos2d::Renderer *renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
 {
+    if( !_mapLoaded )
+    {
+        return;
+    }
     cocos2d::Vec3 rotation =  cocos2d::Vec3( _fpsCamera->getRotation3D().x, _fpsCamera->getRotation3D().y, _fpsCamera->getRotation3D().z );
     float adjustedRotation = ( rotation.y + _cameraRotationOffset ) * ( MATH_PI/180.0f );
     Point3f playerPosition( _fpsCamera->getPosition3D().x, _fpsCamera->getPosition3D().y, _fpsCamera->getPosition3D().z );
@@ -250,6 +258,8 @@ void FPRenderLayer::drawBlock( Point3f hit, int tileIndex )
 
 void FPRenderLayer::loadMap( const std::string& filename )
 {
+    _mapLoaded = false;
+    
     CC_SAFE_DELETE( _mapInfo );
     _mapInfo = new MapInfo( filename.c_str() );
     
@@ -259,6 +269,7 @@ void FPRenderLayer::loadMap( const std::string& filename )
     CC_SAFE_DELETE( _blockManager );
     _blockManager = new BlockManager( *_mapInfo, _layer3D );
     
+    _tileCounter.clear();
     _visitedPlanes.clear();
     _visitedPlanes.reserve( _mapInfo->width * _mapInfo->height );
     resetVisitedPlanes();
@@ -272,6 +283,7 @@ void FPRenderLayer::loadMap( const std::string& filename )
             _tileCounter.push_back( 0 );
         }
     }
+    _mapLoaded = true;
 }
 
 void FPRenderLayer::addFPSCamera( float fieldOfView, float nearPlane, float farPlane )

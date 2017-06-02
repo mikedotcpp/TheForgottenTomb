@@ -113,7 +113,7 @@ namespace mikedotcpp
          * Defines a layer of map spots that create the layout of the level. Indexes into tiles array. Index zero
          * (0) is considered void and is ignored.
          */
-        int* map;
+        int* map = 0;
     };
     
     /**

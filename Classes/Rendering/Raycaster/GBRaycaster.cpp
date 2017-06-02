@@ -56,9 +56,12 @@ Point2i GBRaycaster::tileCoordForPosition( Point3f pos )
 Point2i GBRaycaster::tileCoordForPosition( float x, float y )
 {
     Point2i result;
-    static float mapHeightxTileHeight = _mapHeight * _tileHeight;
-    static float widthDivisor = 1 / _tileWidth;
-    static float heightDivisor = 1 / _tileHeight;
+    //
+    //TODO: Convert these local variables into private member variables for caching...
+    //
+    float mapHeightxTileHeight = _mapHeight * _tileHeight;
+    float widthDivisor = 1 / _tileWidth;
+    float heightDivisor = 1 / _tileHeight;
     result.x = floorf( x * widthDivisor );
     result.y = floorf( ( mapHeightxTileHeight - y ) * heightDivisor );
     return result;

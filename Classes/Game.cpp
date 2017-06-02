@@ -266,10 +266,10 @@ void Game::onKeyReleased( cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Even
             _raycaster->clearTileResourceAt( playerPosition );
             flashScreen();
             dismissHintMessage();
+            
             _blockManager->reclaimAllBlocks();
             
             loadMap( "maps/default.json" );
-            
             
             /////////////////////////
             // Load player position
